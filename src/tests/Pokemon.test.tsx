@@ -21,7 +21,7 @@ describe('Teste o componente <Pokemon.tsx />', () => {
 
     // A imagem do Pokémon deve ser exibida
     const pokemonImg = screen.getByAltText('Pikachu sprite');
-    expect(pokemonImg).toBeInTheDocument;
+    expect(pokemonImg).toBeInTheDocument();
     expect(pokemonImg.src).toBe('https://archives.bulbagarden.net/media/upload/b/b2/Spr_5b_025_m.png');
   });
 
@@ -29,9 +29,9 @@ describe('Teste o componente <Pokemon.tsx />', () => {
     renderWithRouter(<App />);
     const pokemonLink = screen.getByRole('link', { name: /more details/i });
     expect(pokemonLink).toBeInTheDocument();
-    expect(pokemonLink.getAttribute('href')).toBe(`/pokemon/25`)
+    expect(pokemonLink.getAttribute('href')).toBe('/pokemon/25');
   });
-  
+
   it('Ao clicar no link de navegação do Pokémon, é feito o redirecionamento da aplicação para a página de detalhes de Pokémon', async () => {
     renderWithRouter(<App />);
     const pokemonLink = screen.getByRole('link', { name: /more details/i }) as HTMLLinkElement;
@@ -44,7 +44,7 @@ describe('Teste o componente <Pokemon.tsx />', () => {
     renderWithRouter(<App />);
     const moreDetailsLink = screen.getByRole('link', { name: /more details/i });
     await userEvent.click(moreDetailsLink);
-    
+
     const favoriteBtn = screen.getByRole('checkbox', { name: /pokémon favoritado\?/i }) as HTMLInputElement;
     await userEvent.click(favoriteBtn);
     expect(favoriteBtn.checked).toBe(true);
