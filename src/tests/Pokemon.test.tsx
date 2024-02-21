@@ -26,4 +26,11 @@ describe('Teste o componente <Pokemon.tsx />', () => {
 
 
   });
+
+  it('O card do Pokémon deve conter um link de navegação para exibir detalhes desse pokémon', () => {
+    renderWithRouter(<App />);
+    const pokemonLink = screen.getByRole('link', { name: /more details/i });
+    expect(pokemonLink).toBeInTheDocument();
+    expect(pokemonLink.getAttribute('href')).toBe(`/pokemon/25`)
+  })
 });
