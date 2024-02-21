@@ -4,7 +4,7 @@ import App from '../App';
 
 describe('Teste o componente <About.tsx />', () => {
   it('A página contém informações sobre a Pokédex', () => {
-    renderWithRouter(<App />, { route: '/about' });
+   c
     const titleElement = screen.getByRole('heading', { name: /about pokédex/i });
     expect(titleElement).toBeInTheDocument();
   });
