@@ -1,7 +1,9 @@
-import { getByRole, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import renderWithRouter from '../renderWithRouter';
 import App from '../App';
-import userEvent from '@testing-library/user-event';
+
+const stringPokemonName = 'pokemon-name';
 
 describe('Teste o componente <Pokedex.tsx />', () => {
   it('A página contém um heading h2 com o texto Encountered Pokémon', () => {
@@ -13,9 +15,9 @@ describe('Teste o componente <Pokedex.tsx />', () => {
   it('É exibido o próximo Pokémon da lista quando o botão Próximo Pokémon é clicado', async () => {
     renderWithRouter(<App />);
     // O botão deve conter o texto próximo pokémon
-    const nextPokemonBtn = screen.getByRole('button', { name: /próximo pokémon/i});
-    expect(nextPokemonBtn).toBeInTheDocument;
-    
+    const nextPokemonBtn = screen.getByRole('button', { name: /próximo pokémon/i });
+    expect(nextPokemonBtn).toBeInTheDocument();
+
     // Os próximos Pokémon da lista devem ser mostrados, um a um, ao clicar sucessivamente no botão.
     const firstPokemonEl = screen.getByText(/pikachu/i);
     expect(firstPokemonEl).toBeInTheDocument();
@@ -26,19 +28,19 @@ describe('Teste o componente <Pokedex.tsx />', () => {
 
   it('É mostrado apenas um Pokémon por vez.', () => {
     renderWithRouter(<App />);
-    const pokemonEl = screen.queryAllByTestId('pokemon-name');
+    const pokemonEl = screen.queryAllByTestId(stringPokemonName);
     expect(pokemonEl.length).toBe(1);
   });
 
   it('Deve existir um botão de filtragem para cada tipo de Pokémon, sem repetição.', () => {
     renderWithRouter(<App />);
     const expectedTypes = ['Fire', 'Poison', 'Normal', 'Electric', 'Bug', 'Psychic', 'Dragon'];
-    
-    expectedTypes.forEach(type => {
-      const btn = screen.getByRole('button', {name: new RegExp(type, 'i')});
+
+    expectedTypes.forEach((type) => {
+      const btn = screen.getByRole('button', { name: new RegExp(type, 'i') });
       expect(btn).toBeInTheDocument();
     });
-    
+
     const allButtons = screen.getAllByTestId('pokemon-type-button');
     expect(allButtons.length).toBe(expectedTypes.length);
   });
@@ -67,12 +69,12 @@ describe('Teste o componente <Pokedex.tsx />', () => {
     renderWithRouter(<App />);
     const fireFilterBtn = screen.getByRole('button', { name: /fire/i });
     await userEvent.click(fireFilterBtn);
-    const firePokemonName = screen.getByTestId('pokemon-name').textContent;
-    
+    const firePokemonName = screen.getByTestId(stringPokemonName).textContent;
+
     const allButton = screen.getByRole('button', { name: /all/i });
     await userEvent.click(allButton);
-    
-    const allPokemonName = screen.getByTestId('pokemon-name').textContent;
+
+    const allPokemonName = screen.getByTestId(stringPokemonName).textContent;
     expect(allPokemonName).not.toEqual(firePokemonName);
   });
 });
