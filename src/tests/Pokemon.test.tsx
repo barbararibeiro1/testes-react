@@ -1,7 +1,9 @@
-import { screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import { createMemoryHistory } from 'history';
 import userEvent from '@testing-library/user-event';
 import renderWithRouter from '../renderWithRouter';
 import App from '../App';
+import { BrowserRouter, Route, Router, createMemoryRouter } from 'react-router-dom';
 
 describe('Teste o componente <Pokemon.tsx />', () => {
   it('É renderizado um card com as informações de determinado Pokémon', () => {
@@ -32,5 +34,13 @@ describe('Teste o componente <Pokemon.tsx />', () => {
     const pokemonLink = screen.getByRole('link', { name: /more details/i });
     expect(pokemonLink).toBeInTheDocument();
     expect(pokemonLink.getAttribute('href')).toBe(`/pokemon/25`)
+  })
+  
+  it('Ao clicar no link de navegação do Pokémon, é feito o redirecionamento da aplicação para a página de detalhes de Pokémon', async () => {
+    renderWithRouter(<App />);
+    const pokemonLink = screen.getByRole('link', { name: /more details/i }) as HTMLLinkElement;
+    await userEvent.click(pokemonLink);
+    const pokemonRandomDetails = screen.getByRole('heading', { name: /pikachu details/i });
+    expect(pokemonRandomDetails).toBeInTheDocument();
   })
 });
