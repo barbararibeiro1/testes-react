@@ -38,5 +38,20 @@ describe('Teste o componente <PokemonDetails.tsx />', () => {
       expect((locationEl).getAttribute('src')).toBeTruthy();
       expect(locationEl).toHaveAttribute('alt', 'Charmander location');
     });
+  });
+  
+  it('O usuário pode favoritar um pokémon por meio da página de detalhes', async () => {
+    renderWithRouter(<App />, { route: '/pokemon/4' });
+    // A página deve exibir um checkbox que permite favoritar o pokémon
+    const favoriteBtn = screen.getByRole('checkbox', { name: /pokémon favoritado\?/i });
+    expect(favoriteBtn).toBeInTheDocument();
+
+    //Cliques alternados no checkbox devem adicionar e remover, respectivamente, o Pokémon da lista de favoritos.
+    const favoriteInputEl = screen.getByRole('checkbox', { name: /pokémon favoritado\?/i }) as HTMLInputElement;
+    await userEvent.click(favoriteInputEl)
+    expect(favoriteInputEl.checked).toBe(true);
+
+    await userEvent.click(favoriteInputEl)
+    expect(favoriteInputEl.checked).toBe(false);
   });  
 });
